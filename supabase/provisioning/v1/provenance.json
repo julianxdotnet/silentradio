@@ -1,0 +1,29 @@
+{
+  "artifact_version": 1,
+  "artifact_kind": "fresh-only provisioning; not an incremental production migration",
+  "upstream_repository": "https://github.com/julianxdotnet/silentradio",
+  "upstream_commit": "0c75f1dfa9aa4173e79b7286bdae6135f3b4edc2",
+  "metadata_source_project": "pceoazjrgwrgxvrkvqbm",
+  "metadata_recovery_date_utc": "2026-10-24",
+  "structure_snapshot_sha256": "f5747ecfe149a17c63b0592558183f11a4c9fe04ea790659480ba29feac4995b",
+  "catalog_snapshot_sha256": "5bbaff389814cc82d1671685a3d484fe032a5b438e82864b01167738541bd21a",
+  "setup_sha256": "c2a7f63fd772bfab8ba1725d911df594c81243ed174908275cb7f6e102d78c3e",
+  "preserved": [
+    "all current columns, defaults, constraints, index, trigger",
+    "all six current function bodies and callable roles",
+    "all current RLS policies"
+  ],
+  "fresh_access_decisions": [
+    "explicit safe-column playlist SELECT and tracks SELECT to anon/authenticated",
+    "no direct client write grants; actual frontend writes via RPC",
+    "no inferred service_role table access",
+    "new-table auto-grants removed per object; schema defaults unchanged"
+  ],
+  "production_applied": false,
+  "limits": [
+    "No hosted provisioning or frontend deployment performed",
+    "Original CI/provisioning workflow and additional consumers unknown",
+    "Existing-token rotation is not included",
+    "PostgreSQL 17 hosted integration must still be verified in disposable Supabase target"
+  ]
+}
