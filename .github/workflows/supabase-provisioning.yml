@@ -6,12 +6,14 @@ on:
       - 'supabase/provisioning/**'
       - '.github/workflows/supabase-provisioning.yml'
       - 'index.html'
+      - 'scripts/build-site.mjs'
   push:
     branches: [main]
     paths:
       - 'supabase/provisioning/**'
       - '.github/workflows/supabase-provisioning.yml'
       - 'index.html'
+      - 'scripts/build-site.mjs'
   workflow_dispatch:
 
 permissions:
@@ -42,3 +44,17 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Verify fresh table access and current RPC flows
         run: npm test
+      - name: Build allowlisted website assets
+        working-directory: .
+        run: node scripts/build-site.mjs
+
+  postgres17:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Verify exact setup on isolated PostgreSQL 17
+        run: bash supabase/provisioning/tests/postgres17.sh

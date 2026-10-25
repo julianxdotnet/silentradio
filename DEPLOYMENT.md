@@ -15,7 +15,7 @@ This repository's live Cloudflare Pages configuration was inspected read-only on
 | Build watch inclusion | `*` |
 | Deployed production commit | `0c75f1d` |
 
-No Cloudflare settings were changed. Before this preparation, the repository had
+No Cloudflare settings were changed during that inspection. Before this preparation, the repository had
 only `index.html` and `deploy-trigger.txt`: no GitHub Actions, database runner or
 build script. GitHub reported zero workflow runs. `deploy-trigger.txt` is a marker
 file, not an executable deployment or migration mechanism.
@@ -23,7 +23,9 @@ file, not an executable deployment or migration mechanism.
 ## Review the compatibility changes without deploying
 
 The new `.github/workflows/supabase-provisioning.yml` only runs isolated database
-tests on pull requests, relevant main-branch pushes or manual dispatch. It has
+tests on pull requests, relevant main-branch pushes or manual dispatch. It uses
+PGlite and a network-disabled disposable PostgreSQL 17 container, and checks the
+static asset build. It has
 read-only repository permission, does not persist checkout credentials, uses pinned
 action revisions, and needs no Supabase secrets or hosted target. It does not run
 SQL against production, push changes, upload assets or deploy.
@@ -48,16 +50,17 @@ external services. Add future local assets to the builder's allowlist deliberate
 It clears only generated entries inside `dist/`, refuses a symlink at `dist`, and
 does not modify the frontend. The generated directory is ignored by Git.
 
-Before a future non-skipped deployment, approve these exact Cloudflare settings:
+Before a future non-skipped deployment, verify these exact Cloudflare settings:
 
-| Setting | Prepared future value |
+| Setting | Required packaging value |
 | --- | --- |
 | Build command | `node scripts/build-site.mjs` |
 | Build output directory | `dist` |
 | Root directory | Empty (repository root) |
 
-These settings have **not** been applied and no deployment has been made. Until
-they are approved and applied, retain the `[CF-Pages-Skip]` commit protocol above.
+Saving these settings is a separate hosting operation; running the local builder
+does not save settings or deploy anything. Until the saved values are verified,
+retain the `[CF-Pages-Skip]` commit protocol above.
 The current frontend is unchanged and still targets the existing production
 Supabase project. The site builder does not execute database provisioning or tests.
 

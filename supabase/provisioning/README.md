@@ -89,10 +89,17 @@ the intended allowlist while the default privileges themselves remain unchanged.
 Missing roles, wrong owner, existing tables/functions, and unexpected inherited
 token access cause atomic setup failure. No extra extension is installed.
 
-These tests establish PostgreSQL ACL/RLS/RPC behavior in the isolated engine, not
-hosted PostgREST routing, GraphQL, deployment, unknown consumers or full PostgreSQL
-17 equivalence. The target remains pending a full disposable Supabase integration
-test before deployment.
+For real PostgreSQL 17 verification, run `bash tests/postgres17.sh` with Docker
+available. CI also runs this suite. It starts the official `postgres:17` image with
+networking disabled, no published ports, a temporary in-memory data directory and
+Unix socket access. It creates no passwords or persistent database credentials and
+removes the container on exit. The exact setup file is checked under both restricted
+and legacy table defaults, including role/column privileges, current RPC flows,
+denied reads/writes, transactional rollback and refusal to replay over existing data.
+
+These tests establish PostgreSQL ACL/RLS/RPC behavior in isolated engines. Hosted
+PostgREST routing, GraphQL, deployment and unknown consumers still require a separate
+disposable Supabase integration test before hosted provisioning.
 
 ## Separate live security remediation
 
